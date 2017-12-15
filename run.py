@@ -31,7 +31,6 @@ else:
 
 while True:
     try:
-        d = time.strftime('%H:%M:%S')
         tag = random.choice(tags)
         pic = 'data/image.jpg'
 
@@ -43,7 +42,7 @@ while True:
             splat = ''
 
         if gen:
-            print(Colour.Green + 'Generating image -', d)
+            print(Colour.Green + 'Generating image')
             generate()
         else:
             try:

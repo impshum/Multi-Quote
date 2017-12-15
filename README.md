@@ -1,8 +1,9 @@
-![Screenshot](https://raw.githubusercontent.com/impshum/material-quote/master/data/ss.jpg)
-
 # Multi Quote
 
-Bot to generate and post snazzy quotes (or your own images) and post to several social media platforms all at once.
+Python bot to generate and post snazzy quotes (or your own images) and post to several social media platforms all at once.
+
+
+![Screenshot](https://raw.githubusercontent.com/impshum/multi-quote/master/data/ss.jpg)
 
 ###### Platforms supported
 * Twitter
@@ -11,9 +12,7 @@ Bot to generate and post snazzy quotes (or your own images) and post to several 
 * Imgur
 * Pinterest
 
-
-
-![Screenshot](https://raw.githubusercontent.com/impshum/material-quote/master/data/image.jpg)
+![Screenshot](https://raw.githubusercontent.com/impshum/Multi-Quote/master/data/image.jpg)
 
 More examples at: https://www.pinterest.co.uk/pultn2/famous-and-quirky-quotes/
 
