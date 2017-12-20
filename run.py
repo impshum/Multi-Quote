@@ -8,6 +8,7 @@ import facebook
 from config import *
 from functions import *
 from InstagramAPI import InstagramAPI
+from PIL import Image, ImageDraw, ImageFont
 from pypin import PyPin
 
 
@@ -24,7 +25,7 @@ _______ _     _        _______ _____      _____  _     _  _____  _______ _______
 mins = timer / 60
 if loop:
     print(Colour.White + 'Posting every {}'.format(int(mins)),
-      'minutes\n\nPress Ctrl + C to exit\n')
+          'minutes\n\nPress Ctrl + C to exit\n')
 else:
     print(Colour.White + '\nPress Ctrl + C to exit\n')
 
@@ -45,20 +46,13 @@ while True:
             print(Colour.Green + 'Generating image')
             generate()
         else:
-            try:
-                d = 'data/images/'
-                pic = d + random.choice(os.listdir(d))
-            except Exception:
-                print(Colour.Red + 'No images')
-                yes = set(['YES', 'yes', 'y', 'Y'])
-                no = set(['NO', 'no', 'n', 'N'])
-                choice = input(Colour.White + 'Use test image? Y/n ')
-                if choice in no:
-                    print(Colour.White + '\nExiting\n')
-                    sys.exit(1)
-                elif choice in yes:
-                    testimg = 1
-                    pic = 'data/test.jpg'
+            d = 'data/images/'
+            pick = d + random.choice(os.listdir(d))
+            os.system('convert -define jpeg:size=1280x1280 -resize 4000x4000^ -gravity center  -extent 4000x4000 ' +
+                      pick + ' data/cropped.jpg')
+            os.system('composite -blend 30 data/overlay.jpg data/cropped.jpg data/result.jpg')
+            print(Colour.Green + 'Cropping image')
+            generate()
 
         if not testmode:
 
@@ -126,28 +120,17 @@ while True:
                     })
                 except Exception:
                     print(Colour.Red + 'Pinterfail')
-            if not gen:
-                try:
-                    os.remove(pic)
-                except Exception:
-                    print(Colour.Red + 'No images')
-                    yes = set(['YES', 'yes', 'y', 'Y'])
-                    no = set(['NO', 'no', 'n', 'N'])
-                    choice = input(Colour.White + 'Use test image? Y/n ')
-                    if choice in no:
-                        print(Colour.White + '\nExiting\n')
-                        sys.exit(1)
-                    elif choice in yes:
-                        testimg = 1
-                        pic = 'data/test.jpg'
 
         else:
             print('test mode')
 
         if not loop:
+            print(Colour.White + '\nExiting\n')
             break
         else:
             time.sleep(timer)
+
+
 
     except KeyboardInterrupt:
         print(Colour.White + '\nExiting\n')

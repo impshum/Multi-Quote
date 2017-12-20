@@ -3,16 +3,23 @@ import textwrap
 import json
 import random
 import os
+from config import *
 
 
 def generate():
     dir = os.path.dirname(__file__)
-    mg = MaterialGenerator()
-    qg = QuoteGenerator()
-    quote = qg.get_quote()
-    image = mg.draw_image(quote['quoteText'], quote[
-                          'quoteAuthor'], (4000, 4000))
-    image.save(os.path.join(dir, 'data/image.jpg'), 'JPEG')
+    if gen:
+        mg = MaterialGenerator()
+        qg = QuoteGenerator()
+        quote = qg.get_quote()
+        image = mg.draw_image(quote['quoteText'], (4000, 4000))
+        image.save(os.path.join(dir, 'data/image.jpg'), 'JPEG')
+    else:
+        mg = BackgroundGenerator()
+        qg = QuoteGenerator()
+        quote = qg.get_quote()
+        image = mg.draw_image(quote['quoteText'], (4000, 4000))
+        image.save(os.path.join(dir, 'data/image.jpg'), 'JPEG')
 
 
 def get_random_color():
@@ -24,8 +31,7 @@ def get_random_color():
 
 class MaterialGenerator:
 
-    def draw_image(self, text, author, size):
-        COPYRIGHT_TEXT = "@PUTlN2"
+    def draw_image(self, text, size):
         dir = os.path.dirname(__file__)
         im = Image.new('RGB', size)
         draw = ImageDraw.Draw(im)
@@ -33,9 +39,26 @@ class MaterialGenerator:
         font = ImageFont.truetype(os.path.join(
             dir, 'fonts/DeFonarts-Bold.otf'), 280)
         lines = textwrap.wrap(text, 20)
-        #if author != "":
-        #    lines.append(' ')
-        #    lines.append('- ' + author)
+        line_dimensions = [draw.textsize(line, font=font) for line in lines]
+        offset = (size[1] - sum(h for w, h in line_dimensions)) // 2
+        for line in lines:
+            w, h = draw.textsize(line, font=font)
+            pos = ((size[0] - w) / 2, offset)
+            draw.text(pos, line, font=font, fill=(255, 255, 255))
+            offset += font.getsize(line)[1]
+        del draw
+        return im
+
+class BackgroundGenerator:
+
+    def draw_image(self, text, size):
+        dir = os.path.dirname(__file__)
+        im = Image.open('data/result.jpg')
+        draw = ImageDraw.Draw(im)
+
+        font = ImageFont.truetype(os.path.join(
+            dir, 'fonts/DeFonarts-Bold.otf'), 280)
+        lines = textwrap.wrap(text, 20)
         line_dimensions = [draw.textsize(line, font=font) for line in lines]
         offset = (size[1] - sum(h for w, h in line_dimensions)) // 2
         for line in lines:
@@ -60,7 +83,6 @@ class QuoteGenerator:
         _quotes = []
         for quote in quotes:
             lQ = quote['quoteText'].__len__()
-            lA = quote['quoteAuthor'].__len__()
-            if lQ <= lenQ and lA <= lenA:
+            if lQ <= lenQ:
                 _quotes.append(quote)
         return _quotes
