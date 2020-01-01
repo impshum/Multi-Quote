@@ -32,3 +32,7 @@ Enter all your juicy details into config.py
 ### Run it
 
     python3 run.py
+
+---
+
+BTC - 1AYSiE7mhR9XshtS4mU2rRoAGxN8wSo4tK
